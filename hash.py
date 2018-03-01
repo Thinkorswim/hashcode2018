@@ -7,6 +7,14 @@ class Ride:
         self.end_coords = end_coords
         self.start_time = start_time
         self.end_time = end_time
+    def __repr__(self):
+        res = 'Ride with start coords: {}, end coords: {}, start time: {}, end time: {}'.format(self.start_coords, self.end_coords, self.start_time, self.end_time)
+        return res
+
+def sort_rides(rides):
+    rides_sorted = sorted(rides, key=lambda x: (x.end_time, x.start_time), reverse=False)
+    return rides_sorted
+
 
 def read_data(dataset="data"):
     # R – number of rows of the grid (1 ≤ R ≤ 10000)
@@ -40,6 +48,12 @@ def read_data(dataset="data"):
     return R, C, F, N, B, T, rides
 
 if __name__ == '__main__':
-    R, C, F, N, B, T, rides  = read_data("a_example.in.txt")
+    R, C, F, N, B, T, rides  = read_data("a_example.in")
 
     print(rides[0])
+
+    r1 = Ride(None, None, 2, 5)
+    r2 = Ride(None, None, 3, 5)
+    r3 = Ride(None, None, 1, 10)
+
+    print(sort_rides([r2, r3, r1]))
