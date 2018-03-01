@@ -1,9 +1,8 @@
 import numpy as np
 
 time = 0
-vehicles[]
 
-
+R, C, F, N, B, T = 0, 0, 0, 0, 0, 0 
 
 class Ride:
     def __init__(self, start_coords, end_coords, start_time, end_time):
@@ -29,11 +28,12 @@ def distance(a, b):
     return abs(a[0]-b[0]) + abs(a[1]-b[1])
 
 def utility(ride, vehicle):
-    if (distance(ride.start_coords, ride.end_coords) + distance(ride.start_coords, vehicle.current_coordinates) + time > ride.end_time)
+    if (distance(ride.start_coords, ride.end_coords) + distance(ride.start_coords, vehicle.current_coordinates) + time > ride.end_time):
         return 0
     utility = 100-(ride.start_time+distance(ride.start_coords, vehicle.current_coordinates)-time)
-    if (distance(ride.start_coords, vehicle.current_coordinates)+time < ride.start_time)
-        utility += B/10
+    if (distance(ride.start_coords, vehicle.current_coordinates)+time < ride.start_time):
+        global B
+        utility += B /10
 
     utility += distance(ride.start_coords, ride.end_coords) * 0.5;
     return utility;
@@ -57,6 +57,7 @@ def read_data(dataset="data"):
         intLine = [int(s) for s in line.split(' ')]
 
         if isFirst:
+            global R; global C; global F; global N; global B; global T
             R = intLine[0]
             C = intLine[1]
             F = intLine[2]
