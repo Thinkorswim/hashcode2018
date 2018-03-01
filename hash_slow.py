@@ -41,7 +41,7 @@ def utility(ride, vehicle):
     utility = 100-(ride.start_time+distance(ride.start_coords, vehicle.current_coordinates)-time)
     if (distance(ride.start_coords, vehicle.current_coordinates)+time < ride.start_time):
         global B
-        utility += B /10
+        utility += B*10
 
     utility += distance(ride.start_coords, ride.end_coords) * 0.5;
     return utility;
@@ -81,7 +81,6 @@ def read_data(dataset="data"):
             rides.append(Ride((intLine[0], intLine[1]), (intLine[2], intLine[3]), intLine[4], intLine[5], index))
             index += 1
 
-    rides = sorted(rides, key=lambda x: x.end_time, reverse=False)
 
     for i in range(F):
         v_new = Vehicle((0,0))
@@ -91,10 +90,6 @@ def read_data(dataset="data"):
     return R, C, F, N, B, T, rides, vehicles, vehiclesArray
 
 if __name__ == '__main__':
-    # c_no_hurry
-    # d_metropolis
-    # e_high_bonus
-
     R, C, F, N, B, T, rides, vehicles, vehiclesArray  = read_data("e_high_bonus.in")
 
 
@@ -106,7 +101,7 @@ if __name__ == '__main__':
         if not len(rides):
             break
 
-        for ride in rides[0:100]:
+        for ride in rides:
             utils.append((utility(ride,v),ride))
 
         utils = sorted(utils, key=lambda x: x[0], reverse=True)
