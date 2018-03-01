@@ -1,15 +1,17 @@
 import numpy as np
+import queue as Q
 
 time = 0
 
-R, C, F, N, B, T = 0, 0, 0, 0, 0, 0 
+R, C, F, N, B, T = 0, 0, 0, 0, 0, 0
 
 class Ride:
-    def __init__(self, start_coords, end_coords, start_time, end_time):
+    def __init__(self, start_coords, end_coords, start_time, end_time, index):
         self.start_coords = start_coords
         self.end_coords = end_coords
         self.start_time = start_time
         self.end_time = end_time
+        self.index = index
     def __repr__(self):
         res = 'Ride with start coords: {}, end coords: {}, start time: {}, end time: {}'.format(self.start_coords, self.end_coords, self.start_time, self.end_time)
         return res
@@ -18,7 +20,11 @@ class Ride:
 class Vehicle:
     def __init__(self, current_coordinates):
         self.current_coordinates = current_coordinates
-        self.finish_time = 0;
+        self.finish_time = 0
+        self.completed = []
+
+    def __lt__(self, other):
+        return self.finish_time < other.finish_time
 
 def sort_rides(rides):
     rides_sorted = sorted(rides, key=lambda x: (x.end_time, x.start_time), reverse=False)
@@ -41,15 +47,15 @@ def utility(ride, vehicle):
 
 def read_data(dataset="data"):
     # R – number of rows of the grid (1 ≤ R ≤ 10000)
-    # ● C – number of columns of the grid (1 ≤ C ≤ 10000)
-    # ● F – number of vehicles in the fleet (1 ≤ F ≤ 1000)
-    # ● N – number of rides (1 ≤ N ≤ 10000)
+    # C – number of columns of the grid (1 ≤ C ≤ 10000)
+    #F – number of vehicles in the fleet (1 ≤ F ≤ 1000)
+    # N – number of rides (1 ≤ N ≤ 10000)
     # ● B – per-ride bonus for starting the ride on time (1 ≤ B ≤ 10000)
     # ● T – number of steps in the simulation (1 ≤ T ≤ 10 )
 
     isFirst = True
     rides = []
-    vehicles = []
+    vehicles = Q.PriorityQueue()
 
 
     f=open(dataset, 'r')
@@ -72,17 +78,25 @@ def read_data(dataset="data"):
 
 
     for i in range(F):
-        vehicles.append(Vehicle((0, 0)))
+        vehicles.put(Vehicle((0,0)))
 
     return R, C, F, N, B, T, rides, vehicles
 
 if __name__ == '__main__':
     R, C, F, N, B, T, rides, vehicles  = read_data("a_example.in")
 
-    print(rides[0])
 
-    r1 = Ride(None, None, 2, 5)
-    r2 = Ride(None, None, 3, 5)
-    r3 = Ride(None, None, 1, 10)
-
-    print(sort_rides([r2, r3, r1]))
+    while not vehicles.empty():
+        print(vehicles.get())
+        v = vehicles.get()
+        utils = []
+        for ride in rides:
+            utils.append((utility(ride,v),ride))
+        utils = sorted(utils, reverse=True)
+        best = utils[0][1]
+        v.completed.append(best.index);
+        v.finish_time = time+distance(v.current_coordinates, best.start_coords) + distance(best.end_coords, best.start_coords)
+        v.current_coordinates = best.end_coords
+        if (v.finish_time <= T)
+            rides.remove(best)
+            vehicles.put(v)
