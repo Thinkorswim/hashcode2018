@@ -11,6 +11,11 @@ class Ride:
         res = 'Ride with start coords: {}, end coords: {}, start time: {}, end time: {}'.format(self.start_coords, self.end_coords, self.start_time, self.end_time)
         return res
 
+
+class Vehicle:
+    def __init__(self, current_coordinates):
+        self.current_coordinates = current_coordinates
+
 def sort_rides(rides):
     rides_sorted = sorted(rides, key=lambda x: (x.end_time, x.start_time), reverse=False)
     return rides_sorted
@@ -26,6 +31,7 @@ def read_data(dataset="data"):
 
     isFirst = True
     rides = []
+    vehicles = []
 
 
     f=open(dataset, 'r')
@@ -45,10 +51,14 @@ def read_data(dataset="data"):
         else:
             rides.append(Ride((intLine[0], intLine[1]), (intLine[2], intLine[3]), intLine[4], intLine[5]))
 
-    return R, C, F, N, B, T, rides
+
+    for i in range(F):
+        vehicles.append(Vehicle((0, 0)))
+
+    return R, C, F, N, B, T, rides, vehicles
 
 if __name__ == '__main__':
-    R, C, F, N, B, T, rides  = read_data("a_example.in")
+    R, C, F, N, B, T, rides, vehicles  = read_data("a_example.in")
 
     print(rides[0])
 
